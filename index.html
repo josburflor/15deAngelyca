@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis XV Años - Angelyca Stell</title>
+  <!-- Tipografías elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Efecto Confeti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: url("img/fondo.png") center / cover fixed no-repeat;
+      color: #4a4a4a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    /* PANTALLA INICIAL (SOBRE INTERACTIVO) */
+    #portada {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transition: all 0.8s ease;
+      cursor: pointer;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .tarjeta-sobre {
+      background:
+        linear-gradient(180deg, rgba(64, 24, 91, 0.35), rgba(42, 15, 66, 0.72)),
+        url("img/nina.png") center 35% / cover no-repeat;
+      padding: 40px 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(224, 169, 145, 0.4);
+      max-width: 420px;
+      width: 100%;
+      min-height: 460px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: none;
+      text-align: center;
+      border: 2px solid #c69be0;
+      animation: latido 2.5s infinite ease-in-out;
+    }
+
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .tarjeta-sobre h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .tarjeta-sobre h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.8rem;
+      color: #fff;
+      line-height: 1.1;
+      margin: 8px 0;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .tarjeta-sobre h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 22px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-tocar {
+      display: inline-block;
+      background: #713795;
+      color: #fff;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .invitacion {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      max-width: 420px;
+      width: 100%;
+      background: transparent;
+      border-radius: 25px;
+      padding: 35px 25px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(224, 169, 145, 0.3);
+      text-align: center;
+    }
+
+    .video-fondo-invitacion {
+      position: absolute;
+      top: 0;
+      left: -18%;
+      z-index: -2;
+      width: 136%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .invitacion::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .intro {
+      font-style: italic;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 8px rgba(28, 12, 38, 0.95);
+    }
+
+    .corona {
+      font-size: 2.2rem;
+      color: #d88a68;
+    }
+
+    .titulo-xv {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 3px;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-top: 5px;
+      text-shadow: 0 2px 8px rgba(28, 12, 38, 0.95);
+    }
+
+    .nombre {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.4rem;
+      color: #fff7e6;
+      line-height: 1.1;
+      margin: 10px 0 20px;
+      text-shadow: 0 3px 12px rgba(28, 12, 38, 0.95);
+    }
+
+    /* CONTADOR REGRESIVO */
+    .contador-box {
+      display: flex;
+      justify-content: space-between;
+      background: #faf4f0;
+      border-radius: 15px;
+      padding: 15px 12px;
+      margin: 20px 0;
+      border: 1px solid #f0ded6;
+    }
+
+    .tiempo {
+      flex: 1;
+    }
+
+    .tiempo span {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #5a3d31;
+    }
+
+    .tiempo label {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #9c7f72;
+    }
+
+    /* DETALLES */
+    .detalles {
+      background: #fff8f5;
+      padding: 20px 15px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border-left: 3px solid #d88a68;
+      text-align: left;
+    }
+
+    .item-detalle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 10px 0;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .item-detalle span {
+      font-size: 1.3rem;
+    }
+
+    /* BOTONES */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-mapa {
+      background: #faf4f0;
+      color: #7d5341;
+      border: 1px solid #d88a68;
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366, #1ebe5d);
+      color: #ffffff;
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+    }
+
+    /* OCULTAR PORTADA */
+    .desaparecer {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.08);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. PORTADA: TOCA PARA ABRIR -->
+  <div id="portada" onclick="abrirInvitacion()">
+    <div class="tarjeta-sobre">
+      <h3>INVITACIÓN ESPECIAL</h3>
+      <h2>Mis 15 Años</h2>
+      <h4>Angelyca Stell</h4>
+      <div class="btn-tocar">TOCA PARA ABRIR</div>
+    </div>
+  </div>
+
+  <!-- 2. CONTENIDO DE LA INVITACIÓN -->
+  <div class="invitacion">
+    <video class="video-fondo-invitacion" autoplay muted loop playsinline aria-hidden="true">
+      <source src="img/video.mp4" type="video/mp4">
+    </video>
+    <div class="corona">👑</div>
+    <p class="intro">
+      "Te invito a celebrar esta aventura<br>y día especial"
+    </p>
+    <div class="titulo-xv">— MIS 15 AÑOS —</div>
+    <h1 class="nombre">Angelyca Stell</h1>
+
+    <!-- CUENTA REGRESIVA -->
+    <div class="contador-box">
+      <div class="tiempo"><span id="dias">00</span><label>Días</label></div>
+      <div class="tiempo"><span id="horas">00</span><label>Horas</label></div>
+      <div class="tiempo"><span id="minutos">00</span><label>Min</label></div>
+      <div class="tiempo"><span id="segundos">00</span><label>Seg</label></div>
+    </div>
+
+    <!-- DETALLES DEL EVENTO -->
+    <div class="detalles">
+      <div class="item-detalle">
+        <span>📅</span>
+        <div><strong>Sábado, 5 de Diciembre de 2026</strong></div>
+      </div>
+      <div class="item-detalle">
+        <span>⏰</span>
+        <div><strong>9:00 PM</strong></div>
+      </div>
+      <div class="item-detalle">
+        <span>📍</span>
+        <div>
+          <strong>Posada la Herrereña</strong><br>
+          <small style="color: #666;">Bejuma, Edo. Carabobo</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <!-- Botón Mapa directo al lugar en Bejuma -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Posada+la+Herrereña+Bejuma+Carabobo" target="_blank" class="btn btn-mapa">
+      📍 Ver Ubicación (Google Maps)
+    </a>
+
+    <!-- Confirmación de asistencia por WhatsApp -->
+    <a href="https://wa.me/584124507474?text=¡Hola!%20Confirmo%20con%20mucho%20gusto%20mi%20asistencia%20a%20los%20XV%20Años%20de%20Angelyca%20Stell%20👑" target="_blank" class="btn btn-whatsapp">
+      💬 Confirmar Asistencia por WhatsApp
+    </a>
+  </div>
+
+  <script>
+    const tarjetaPortada = document.querySelector('.tarjeta-sobre');
+    const tarjetaInvitacion = document.querySelector('.invitacion');
+
+    function igualarTamanoTarjetas() {
+      const { width, height } = tarjetaInvitacion.getBoundingClientRect();
+      tarjetaPortada.style.width = `${width}px`;
+      tarjetaPortada.style.height = `${height}px`;
+    }
+
+    igualarTamanoTarjetas();
+    document.fonts.ready.then(igualarTamanoTarjetas);
+    window.addEventListener('resize', igualarTamanoTarjetas);
+
+    // ABRIR EL SOBRE Y LANZAR CONFETI
+    function abrirInvitacion() {
+      document.getElementById('portada').classList.add('desaparecer');
+
+      // Disparo de confeti brillante
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#e0a991', '#b65f3d', '#ffd700', '#ffffff']
+      });
+    }
+
+    // Cuenta regresiva: 5 de diciembre de 2026 a las 21:00, hora Venezuela (UTC-04:00).
+    const fechaFiesta = new Date('2026-12-05T21:00:00-04:00').getTime();
+
+    setInterval(function() {
+      const ahora = new Date().getTime();
+      const distancia = fechaFiesta - ahora;
+
+      if (distancia > 0) {
+        document.getElementById('dias').innerText = Math.floor(distancia / (1000 * 60 * 60 * 24));
+        document.getElementById('horas').innerText = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('minutos').innerText = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById('segundos').innerText = Math.floor((distancia % (1000 * 60)) / 1000);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
