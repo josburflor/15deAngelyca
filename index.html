@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis XV Años - Angelyca Stell</title>
+  <title>Mis XV Años - Angelyca Sther</title>
   <!-- Tipografías elegantes -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
   <!-- Efecto Confeti -->
@@ -144,6 +144,20 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    .btn-audio {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 1;
+      padding: 9px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      background: rgba(70, 35, 83, 0.88);
+      color: #fff;
+      font: 600 0.75rem 'Montserrat', sans-serif;
+      cursor: pointer;
+    }
+
     .intro {
       font-style: italic;
       color: #fff;
@@ -276,7 +290,7 @@
     <div class="tarjeta-sobre">
       <h3>INVITACIÓN ESPECIAL</h3>
       <h2>Mis 15 Años</h2>
-      <h4>Angelyca Stell</h4>
+      <h4>Angelyca Sther</h4>
       <div class="btn-tocar">TOCA PARA ABRIR</div>
     </div>
   </div>
@@ -286,12 +300,16 @@
     <video class="video-fondo-invitacion" autoplay muted loop playsinline aria-hidden="true">
       <source src="img/video.mp4" type="video/mp4">
     </video>
+    <audio id="musica-invitacion" preload="auto" loop>
+      <source src="img/white_records-easy-dramatic-waltz-for-short-video-vlog-promo-podcast-21-seconds-182218.mp3" type="audio/mpeg">
+    </audio>
+    <button class="btn-audio" id="boton-audio" type="button" aria-label="Reproducir música" onclick="alternarMusica()">▶ Reproducir música</button>
     <div class="corona">👑</div>
     <p class="intro">
       "Te invito a celebrar esta aventura<br>y día especial"
     </p>
     <div class="titulo-xv">— MIS 15 AÑOS —</div>
-    <h1 class="nombre">Angelyca Stell</h1>
+    <h1 class="nombre">Angelyca Sther</h1>
 
     <!-- CUENTA REGRESIVA -->
     <div class="contador-box">
@@ -335,6 +353,35 @@
   <script>
     const tarjetaPortada = document.querySelector('.tarjeta-sobre');
     const tarjetaInvitacion = document.querySelector('.invitacion');
+    const musicaInvitacion = document.getElementById('musica-invitacion');
+    const botonAudio = document.getElementById('boton-audio');
+
+    async function reproducirMusica() {
+      try {
+        await musicaInvitacion.play();
+        botonAudio.textContent = '⏸ Pausar música';
+        botonAudio.setAttribute('aria-label', 'Pausar música');
+      } catch {
+        botonAudio.textContent = '▶ Toca para reproducir';
+        botonAudio.setAttribute('aria-label', 'Tocar para reproducir música');
+      }
+    }
+
+    function alternarMusica() {
+      if (musicaInvitacion.paused) {
+        reproducirMusica();
+        return;
+      }
+
+      musicaInvitacion.pause();
+      botonAudio.textContent = '▶ Reproducir música';
+      botonAudio.setAttribute('aria-label', 'Reproducir música');
+    }
+
+    musicaInvitacion.addEventListener('error', () => {
+      botonAudio.textContent = 'Audio no disponible';
+      botonAudio.disabled = true;
+    });
 
     function igualarTamanoTarjetas() {
       const { width, height } = tarjetaInvitacion.getBoundingClientRect();
@@ -349,6 +396,7 @@
     // ABRIR EL SOBRE Y LANZAR CONFETI
     function abrirInvitacion() {
       document.getElementById('portada').classList.add('desaparecer');
+      reproducirMusica();
 
       // Disparo de confeti brillante
       confetti({
