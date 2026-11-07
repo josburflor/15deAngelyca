@@ -289,6 +289,10 @@
 </head>
 <body>
 
+  <audio id="musica-invitacion" autoplay preload="auto" loop>
+    <source src="img/white_records-easy-dramatic-waltz-for-short-video-vlog-promo-podcast-21-seconds-182218.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- 1. PORTADA: TOCA PARA ABRIR -->
   <div id="portada" onclick="abrirInvitacion()">
     <div class="tarjeta-sobre">
@@ -305,9 +309,6 @@
     <video class="video-fondo-invitacion" autoplay muted loop playsinline aria-hidden="true">
       <source src="img/video.mp4" type="video/mp4">
     </video>
-    <audio id="musica-invitacion" autoplay preload="auto" loop>
-      <source src="img/white_records-easy-dramatic-waltz-for-short-video-vlog-promo-podcast-21-seconds-182218.mp3" type="audio/mpeg">
-    </audio>
     <button class="btn-audio" type="button" aria-label="Reproducir música" title="Reproducir música" onclick="alternarMusica(event)">▶</button>
     <div class="corona">👑</div>
     <p class="intro">
