@@ -47,6 +47,7 @@
     }
 
     .tarjeta-sobre {
+      position: relative;
       background:
         linear-gradient(180deg, rgba(64, 24, 91, 0.35), rgba(42, 15, 66, 0.72)),
         url("img/nina.png") center 35% / cover no-repeat;
@@ -149,12 +150,15 @@
       top: 14px;
       right: 14px;
       z-index: 1;
-      padding: 9px 13px;
+      width: 46px;
+      height: 46px;
       border: 1px solid rgba(255, 255, 255, 0.8);
-      border-radius: 24px;
+      border-radius: 50%;
       background: rgba(70, 35, 83, 0.88);
       color: #fff;
-      font: 600 0.75rem 'Montserrat', sans-serif;
+      display: grid;
+      place-items: center;
+      font: 600 1rem 'Montserrat', sans-serif;
       cursor: pointer;
     }
 
@@ -288,6 +292,7 @@
   <!-- 1. PORTADA: TOCA PARA ABRIR -->
   <div id="portada" onclick="abrirInvitacion()">
     <div class="tarjeta-sobre">
+      <button class="btn-audio" type="button" aria-label="Reproducir música" title="Reproducir música" onclick="alternarMusica(event)">▶</button>
       <h3>INVITACIÓN ESPECIAL</h3>
       <h2>Mis 15 Años</h2>
       <h4>Angelyca Sther</h4>
@@ -300,10 +305,10 @@
     <video class="video-fondo-invitacion" autoplay muted loop playsinline aria-hidden="true">
       <source src="img/video.mp4" type="video/mp4">
     </video>
-    <audio id="musica-invitacion" preload="auto" loop>
+    <audio id="musica-invitacion" autoplay preload="auto" loop>
       <source src="img/white_records-easy-dramatic-waltz-for-short-video-vlog-promo-podcast-21-seconds-182218.mp3" type="audio/mpeg">
     </audio>
-    <button class="btn-audio" id="boton-audio" type="button" aria-label="Reproducir música" onclick="alternarMusica()">▶ Reproducir música</button>
+    <button class="btn-audio" type="button" aria-label="Reproducir música" title="Reproducir música" onclick="alternarMusica(event)">▶</button>
     <div class="corona">👑</div>
     <p class="intro">
       "Te invito a celebrar esta aventura<br>y día especial"
@@ -354,34 +359,49 @@
     const tarjetaPortada = document.querySelector('.tarjeta-sobre');
     const tarjetaInvitacion = document.querySelector('.invitacion');
     const musicaInvitacion = document.getElementById('musica-invitacion');
-    const botonAudio = document.getElementById('boton-audio');
+    const botonesAudio = document.querySelectorAll('.btn-audio');
+
+    function actualizarBotonesAudio(reproduciendo, texto = '') {
+      botonesAudio.forEach((boton) => {
+        boton.textContent = reproduciendo ? 'Ⅱ' : '▶';
+        const accion = reproduciendo ? 'Pausar música' : (texto || 'Reproducir música');
+        boton.setAttribute('aria-label', accion);
+        boton.title = accion;
+      });
+    }
 
     async function reproducirMusica() {
       try {
         await musicaInvitacion.play();
-        botonAudio.textContent = '⏸ Pausar música';
-        botonAudio.setAttribute('aria-label', 'Pausar música');
+        actualizarBotonesAudio(true);
       } catch {
-        botonAudio.textContent = '▶ Toca para reproducir';
-        botonAudio.setAttribute('aria-label', 'Tocar para reproducir música');
+        actualizarBotonesAudio(false, 'Toca para reproducir música');
       }
     }
 
-    function alternarMusica() {
+    function alternarMusica(event) {
+      event.stopPropagation();
       if (musicaInvitacion.paused) {
         reproducirMusica();
         return;
       }
 
       musicaInvitacion.pause();
-      botonAudio.textContent = '▶ Reproducir música';
-      botonAudio.setAttribute('aria-label', 'Reproducir música');
+      actualizarBotonesAudio(false);
     }
 
     musicaInvitacion.addEventListener('error', () => {
-      botonAudio.textContent = 'Audio no disponible';
-      botonAudio.disabled = true;
+      botonesAudio.forEach((boton) => {
+        boton.textContent = '!';
+        boton.setAttribute('aria-label', 'Audio no disponible');
+        boton.title = 'Audio no disponible';
+        boton.disabled = true;
+      });
     });
+
+    musicaInvitacion.addEventListener('play', () => actualizarBotonesAudio(true));
+    musicaInvitacion.addEventListener('pause', () => actualizarBotonesAudio(false));
+    reproducirMusica();
 
     function igualarTamanoTarjetas() {
       const { width, height } = tarjetaInvitacion.getBoundingClientRect();
